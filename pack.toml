@@ -1,0 +1,10 @@
+[custom.all.AoC-2025]
+type = "local"
+path = "."
+ipkg = "AoC-2025.ipkg"
+test = "test/test.ipkg"
+
+[custom.all.AoC-2025-test]
+type = "local"
+path = "test"
+ipkg = "test.ipkg"
