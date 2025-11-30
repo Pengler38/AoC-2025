@@ -9,20 +9,15 @@ import Day1
 
 %default total
 
-defaultFiles : Vect ? String
-defaultFiles = [
-  "data/day1.txt"
-]
-
 solutions : Vect ? (String -> String)
 solutions = [
   day1
 ]
 
-||| Ensures defaultFiles and solutions have the same size
-0 zippedInputsAndSolutions : Vect ? (String, String->String)
-zippedInputsAndSolutions = zip defaultFiles solutions
-
+defaultFiles : Vect (length Main.solutions) String
+defaultFiles = [
+  "data/day1.txt"
+]
 
 data Error = InvalidDay String | InvalidCommand String | InvalidFile String FileError
 
