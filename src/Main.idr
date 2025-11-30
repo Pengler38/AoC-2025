@@ -19,7 +19,7 @@ solutions = [
   day1
 ]
 
--- Ensures defaultFiles and solutions have the same size
+||| Ensures defaultFiles and solutions have the same size
 0 zippedInputsAndSolutions : Vect ? (String, String->String)
 zippedInputsAndSolutions = zip defaultFiles solutions
 
@@ -31,6 +31,11 @@ implementation Show Error where
   show (InvalidCommand s) = "Command is invalid: " ++ s
   show (InvalidFile path e) = show e ++ ": " ++ path
 
+||| Utility function, for use with a showable Left in an IO context
+unwrapInto : Show e => Either e a -> Lazy (a -> IO ()) -> IO ()
+e `unwrapInto` f = either (putStrLn . show) f e
+
+||| Attempts to parse s into a Fin which can safely index solutions
 parseDay : String -> Either Error (Fin ?)
 parseDay s = 
   let fin : Maybe (Fin ?)
@@ -41,9 +46,9 @@ parseDay s =
 
 covering
 getFile : String -> IO (Either Error String)
-getFile s = (mapFst (InvalidFile s)) <$> readFile s
+getFile s = mapFst (InvalidFile s) <$> readFile s
 
--- Runs the solution of day n on the input string
+||| Runs the solution of day n on the input string
 solve : (Fin ?) -> String -> String
 solve n = index n solutions
 
@@ -51,22 +56,16 @@ solve n = index n solutions
 covering
 runCommand : String -> IO ()
 runCommand command = 
-  let 
-    unwrapInto : Either Error a -> Lazy (a -> IO ()) -> IO ()
-    e `unwrapInto` f = either (putStrLn . show) f e
-
-    runSolution : String -> Maybe String -> IO ()
-    runSolution sDay mFile =
-      (parseDay sDay) `unwrapInto` \day => do
-        let file = maybe (index day defaultFiles) id mFile
-        eInput <- getFile file
-        eInput `unwrapInto` \input => do
-          putStrLn $ "Running day " ++ sDay ++ " on " ++ file ++ "..."
-          putStrLn $ "\nResult:\n" ++ solve day input
-
+  let runSolution : String -> Maybe String -> IO ()
+      runSolution sDay mFile =
+        (parseDay sDay) `unwrapInto` \day => do
+          let file = maybe (index day defaultFiles) id mFile
+          eInput <- getFile file
+          eInput `unwrapInto` \input => do
+            putStrLn $ "Running day " ++ sDay ++ " on " ++ file ++ "..."
+            putStrLn $ "\nResult:\n" ++ solve day input
   in case words command of
-    d::file::_ => runSolution d (Just file)
-    d::_ => runSolution d Nothing
+    day::rest => runSolution day (head' rest)
     _ => putStrLn $ show $ InvalidCommand command
 
 
