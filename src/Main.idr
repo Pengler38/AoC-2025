@@ -9,6 +9,7 @@ import Day1
 
 %default total
 
+partial
 solutions : Vect ? (String -> String)
 solutions = [
   day1
@@ -31,6 +32,7 @@ unwrapInto : Show e => Either e a -> Lazy (a -> IO ()) -> IO ()
 e `unwrapInto` f = either (putStrLn . show) f e
 
 ||| Attempts to parse s into a Fin which can safely index solutions
+partial
 parseDay : String -> Either Error (Fin ?)
 parseDay s = 
   let fin : Maybe (Fin ?)
@@ -44,11 +46,12 @@ getFile : String -> IO (Either Error String)
 getFile s = mapFst (InvalidFile s) <$> readFile s
 
 ||| Runs the solution of day n on the input string
+partial
 solve : (Fin ?) -> String -> String
 solve n = index n solutions
 
 
-covering
+partial
 runCommand : String -> IO ()
 runCommand command = 
   let runSolution : String -> Maybe String -> IO ()
@@ -73,7 +76,7 @@ intro = """
   Enter command: 
   """
 
-covering
+partial
 main : IO ()
 main = do
   args <- getArgs
