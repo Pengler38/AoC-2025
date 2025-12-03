@@ -6,19 +6,22 @@ import Data.String
 import Data.Vect
 
 import Day1
+import Day2
 
 %default total
 
 partial
 solutions : Vect ? (String -> String)
-solutions = [
-  day1
-]
+solutions =
+  [day1
+  ,day2
+  ]
 
+||| defaultFiles used are "data/1.txt", "data/2.txt", etc.
+||| Automatically updates to the length of solutions
+partial
 defaultFiles : Vect (length Main.solutions) String
-defaultFiles = [
-  "data/day1.txt"
-]
+defaultFiles = (\i => "data/" ++ show (1 + finToInteger i) ++ ".txt") <$> range
 
 data Error = InvalidDay String | InvalidCommand String | InvalidFile String FileError
 
