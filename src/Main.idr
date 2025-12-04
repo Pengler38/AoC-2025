@@ -7,6 +7,7 @@ import Data.Vect
 
 import Day1
 import Day2
+import Day3
 
 %default total
 
@@ -15,6 +16,7 @@ solutions : Vect ? (String -> String)
 solutions =
   [day1
   ,day2
+  ,day3
   ]
 
 ||| defaultFiles used are "data/1.txt", "data/2.txt", etc.
