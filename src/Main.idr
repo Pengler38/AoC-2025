@@ -12,6 +12,7 @@ import Day4
 import Day5
 import Day6
 import Day7
+import Day8
 
 %default total
 
@@ -25,6 +26,7 @@ solutions =
   ,day5
   ,day6
   ,day7
+  ,day8
   ]
 
 ||| defaultFiles used are "data/1.txt", "data/2.txt", etc.
